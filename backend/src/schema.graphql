@@ -1,0 +1,103 @@
+type Query {
+  getUser(id: String!): SingleUser
+  getRoom(roomId: String!): SingleRoom
+  getRooms: [SingleRoom]!
+  getMessages(roomId: String!): [SingleMessage]
+  getMurdered(roomId: String!, nightNum: Int!): SingleUser
+}
+
+type Mutation {
+  createUser (name: String!): String
+  deleteUser (userId: String!, roomId: String!): Result!
+  createRoom (userId: String!, name: String!): SingleRoom
+  deleteRoom (roomId: String!): Result!
+  joinRoom(userId: String!, roomId: String!): SingleRoom 
+  startGame(roomId: String!): Boolean
+  createMessage(input: createMessageInput!): Result!
+  murder(roomId: String!, userId: String!, nightNum: Int!): Result!
+  poison(roomId: String!, userId: String!, nightNum: Int!): Result!
+  saveMurder(roomId: String!, nightNum: Int!): Result!
+  doNothing(roomId: String!, nightNum: Int!): Result!
+  checkCharacter(roomId: String!, userId: String!): Boolean!
+  checkGameEnd(roomId: String!): Boolean!
+  vote(roomId: String!, dayNum: Int!, voterId: String!, targetId: String!): Result!
+  executeNightResult(roomId: String!, nightNum: Int!): SingleNight!
+}
+
+type Subscription {
+  subscribeUser(userId: String!): SingleUser
+  subscribeRoom(roomId: String!): SingleRoom
+  subscribeRooms: [SingleRoom]
+  subscribeMessages(roomId: String!): SingleMessage
+}
+
+type SingleRoom {
+  id: String!
+  name: String!
+  owner: String!
+  stage: RoomStage
+  players: [SingleUser]
+  wolf1: SingleUser
+  wolf2: SingleUser
+  witch: SingleUser
+  foreteller: SingleUser
+  deadNum: Int
+  messages: [SingleMessage]
+}
+
+type SingleUser {
+  id: String!
+  name: String!
+  character: CharacterType
+  dead: Boolean
+}
+
+type SingleMessage {
+  room: SingleRoom
+  sender: SingleUser
+  body: String!
+  fromWolf: Boolean!
+  dayNum: Int!
+}
+
+type SingleNight {
+  roomId: String!
+  nightNum: Int!
+  murder: SingleUser
+  poison: SingleUser
+  isSaved: Boolean
+  deadNum: Int!
+}
+
+type Result {
+  success: Boolean!
+  msg: String
+}
+
+input createMessageInput {
+  roomId: String!
+  senderId: String!
+  body: String!
+  fromWolf: Boolean!
+  dayNum: Int!
+}
+
+
+enum CharacterType {
+    UNKNOWN
+    WOLF1
+    WOLF2
+    CIVILIAN
+    WITCH
+    FORETELLER
+}
+
+enum RoomStage {
+    WAITING
+    NIGHT_WOLF
+    NIGHT_WITCH
+    NIGHT_FORETELLER
+    MORNING
+    WOLF_WIN
+    CIVILIAN_WIN
+}

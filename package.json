@@ -1,0 +1,15 @@
+{
+  "name": "Web-Programming-Final-Project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mid2sick/Web-Programming-Final-Project.git",
+  "author": "b08902005 <b08902005@ntu.edu.tw>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd frontend && yarn start",
+    "server": "cd backend && yarn start",
+    "install:prod": "cd frontend && yarn install --freeze-lockfile && cd ../backend && yarn install --freeze-lockfile",
+    "build": "cd frontend && yarn build",
+    "deploy": "cd backend && yarn deploy"
+  }
+}
